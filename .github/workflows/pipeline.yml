@@ -1,1 +1,42 @@
+name: Nginx CI/CD Pipeline
 
+on:
+  push:
+    branches:
+      - main
+
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  build-test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Make scripts executable
+        run: chmod +x scripts/*.sh
+
+      - name: Build Stage
+        run: ./scripts/build.sh
+
+      - name: Test Stage
+        run: ./scripts/test.sh
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Build Docker Image
+        run: |
+          docker build \
+            -t nginx-demo:${{ github.sha }} \
+            -t nginx-demo:latest \
+            .
+
+      - name: Verify Docker Image
+        run: docker images
+
+      
