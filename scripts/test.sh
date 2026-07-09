@@ -11,7 +11,7 @@ fi
 echo "✅ index.html found"
 
 # Check page title
-if grep -q "<title>CI/CD Demo</title>" index.html; then
+if grep -q "<title>Vipul CI/CD Demo</title>" index.html; then
     echo "✅ Title test passed"
 else
     echo "❌ Title test failed"
